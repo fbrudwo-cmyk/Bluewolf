@@ -1,0 +1,186 @@
+﻿"use client";
+
+import Link from "next/link";
+import { copy, type Locale } from "@/lib/bluewolf-data";
+import { buildHeaderNav } from "@/lib/header-nav";
+import { SiteHeader } from "@/components/layout/SiteHeader";
+import { SiteFooter } from "@/components/layout/SiteFooter";
+import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
+import { useTheme } from "@/app/theme";
+
+export type AboutCopy = {
+    brand: string;
+    login: string;
+    badge: string;
+    title: string;
+    desc: string;
+    missionTitle: string;
+    missionDesc: string;
+    valuesTitle: string;
+    values: {
+        title: string;
+        desc: string;
+    }[];
+    processTitle: string;
+    process: string[];
+    ctaTitle: string;
+    ctaDesc: string;
+    ctaPrimary: string;
+    ctaSecondary: string;
+    footerDesc: string;
+    footerCopyright: string;
+};
+
+export function AboutPageTemplate({
+    t,
+    locale,
+}: {
+    t: AboutCopy;
+    locale: Locale;
+}) {
+    const { isDark } = useTheme();
+
+    const headerCopy = copy[locale];
+    const navItems = buildHeaderNav({
+        locale,
+        pageType: "about",
+        t: headerCopy,
+    });
+
+    return (
+        <div
+            className={`min-h-screen [font-family:var(--font-noto-sans-cjk),sans-serif] transition-colors duration-300 ${
+                isDark ? "bg-slate-950 text-slate-100" : "bg-slate-50 text-slate-900"
+            }`}
+        >
+            <SiteHeader
+                brand={t.brand}
+                navItems={navItems}
+                activeKey="about"
+                loginLabel={t.login}
+                isDark={isDark}
+                rightSlot={<LanguageSwitcher currentLocale={locale} isDark={isDark} mode="link" />}
+            />
+
+            <main className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10">
+                <section
+                    className={`rounded-[32px] border p-8 shadow-sm transition-colors duration-300 lg:p-10 ${
+                        isDark ? "border-white/10 bg-slate-900" : "border-slate-200 bg-white"
+                    }`}
+                >
+                    <span className="inline-flex rounded-full bg-blue-50 px-4 py-2 text-sm font-extrabold text-blue-700">
+                        {t.badge}
+                    </span>
+
+                    <h1
+                        className={`mt-5 max-w-4xl text-4xl font-black tracking-tight lg:text-6xl ${
+                            isDark ? "text-white" : "text-slate-900"
+                        }`}
+                    >
+                        {t.title}
+                    </h1>
+
+                    <p
+                        className={`mt-5 max-w-3xl text-base leading-8 lg:text-lg ${
+                            isDark ? "text-slate-300" : "text-slate-500"
+                        }`}
+                    >
+                        {t.desc}
+                    </p>
+                </section>
+
+                <section className="grid gap-5 lg:grid-cols-[1.1fr_0.9fr]">
+                    <div
+                        className={`rounded-[28px] border p-7 shadow-sm transition-colors duration-300 ${
+                            isDark ? "border-white/10 bg-slate-900" : "border-slate-200 bg-white"
+                        }`}
+                    >
+                        <h2 className={`text-2xl font-black tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
+                            {t.missionTitle}
+                        </h2>
+                        <p className={`mt-4 leading-8 ${isDark ? "text-slate-300" : "text-slate-500"}`}>
+                            {t.missionDesc}
+                        </p>
+                    </div>
+
+                    <div
+                        className={`rounded-[28px] border p-7 shadow-sm transition-colors duration-300 ${
+                            isDark ? "border-white/10 bg-slate-900" : "border-slate-200 bg-white"
+                        }`}
+                    >
+                        <h2 className={`text-2xl font-black tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
+                            {t.processTitle}
+                        </h2>
+                        <div className="mt-4 grid gap-3">
+                            {t.process.map((item, index) => (
+                                <div
+                                    key={`${index}-${item}`}
+                                    className={`rounded-2xl px-4 py-3 text-sm font-semibold transition-colors duration-300 ${
+                                        isDark ? "bg-slate-950 text-slate-200" : "bg-slate-50 text-slate-700"
+                                    }`}
+                                >
+                                    {index + 1}. {item}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+
+                <section
+                    className={`rounded-[28px] border p-7 shadow-sm transition-colors duration-300 ${
+                        isDark ? "border-white/10 bg-slate-900" : "border-slate-200 bg-white"
+                    }`}
+                >
+                    <h2 className={`text-2xl font-black tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
+                        {t.valuesTitle}
+                    </h2>
+
+                    <div className="mt-5 grid gap-4 md:grid-cols-3">
+                        {t.values.map((value) => (
+                            <div
+                                key={value.title}
+                                className={`rounded-[24px] border p-5 transition-colors duration-300 ${
+                                    isDark ? "border-white/10 bg-slate-950" : "border-slate-200 bg-slate-50"
+                                }`}
+                            >
+                                <h3 className={`text-xl font-black tracking-tight ${isDark ? "text-white" : "text-slate-900"}`}>
+                                    {value.title}
+                                </h3>
+                                <p className={`mt-3 leading-7 ${isDark ? "text-slate-300" : "text-slate-500"}`}>
+                                    {value.desc}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                <section className="rounded-[28px] border border-blue-500/20 bg-blue-600 p-8 text-white shadow-sm">
+                    <h2 className="text-3xl font-black tracking-tight">{t.ctaTitle}</h2>
+                    <p className="mt-3 max-w-2xl leading-8 text-blue-100">{t.ctaDesc}</p>
+
+                    <div className="mt-6 flex flex-wrap gap-3">
+                        <Link
+                            href="/#tours"
+                            className="rounded-2xl bg-white px-5 py-4 font-bold text-slate-900 transition hover:bg-slate-100"
+                        >
+                            {t.ctaPrimary}
+                        </Link>
+                        <Link
+                            href="/"
+                            className="rounded-2xl bg-white/10 px-5 py-4 font-bold text-white transition hover:bg-white/20"
+                        >
+                            {t.ctaSecondary}
+                        </Link>
+                    </div>
+                </section>
+            </main>
+
+            <SiteFooter
+                brand={t.brand}
+                description={t.footerDesc}
+                copyright={t.footerCopyright}
+                isDark={isDark}
+            />
+        </div>
+    );
+}
