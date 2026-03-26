@@ -1,7 +1,7 @@
-﻿export type Locale = "ko" | "ja" | "en";
+export type Locale = "ko" | "ja" | "en";
 export type CommunityTab = "all" | "review" | "mate" | "qna";
-export type Region = "gobi" | "central" | "north";
-export type Theme = "desert" | "family" | "premium";
+export type Region = "south" | "central" | "north" | "west";
+export type Theme = "desert" | "family" | "premium" | "adventure";
 export type DurationType = "short" | "long";
 
 export type Tour = {
@@ -13,6 +13,8 @@ export type Tour = {
     deposit: number;
     gradient: string;
     heroImage: string;
+    images: string[];
+    detailImages: string[];
     title: Record<Locale, string>;
     desc: Record<Locale, string>;
     tags: Record<Locale, string[]>;
@@ -20,10 +22,33 @@ export type Tour = {
     highlights: Record<Locale, string[]>;
 };
 
-export type CommunityItem = {
-    type: Exclude<CommunityTab, "all">;
+export type CommunityComment = {
     author: string;
     text: string;
+    date: string;
+};
+
+export type CommunityItem = {
+    id: number;
+    type: Exclude<CommunityTab, "all">;
+    author: string;
+    date: string;
+    text: string;
+    likes: number;
+    // 후기 전용
+    rating?: number;
+    tourTitle?: string;
+    // 동행 전용
+    travelDate?: string;
+    maxPeople?: number;
+    currentPeople?: number;
+    travelRegion?: string;
+    // 질문 전용
+    answered?: boolean;
+    // 첨부 사진
+    photos?: string[];
+    // 댓글
+    comments?: CommunityComment[];
 };
 
 export type HeroSlide = {
@@ -51,14 +76,19 @@ export const copy = {
         allDuration: "전체 일정",
         shortDuration: "3~4일",
         longDuration: "5일 이상",
+        allDurationShort: "4박 이하",
+        allDurationLong: "5박 이상",
         allRegion: "전체 지역",
         gobi: "고비",
+        south: "남부",
         central: "중부",
         north: "북부",
+        west: "서부",
         allTheme: "전체 테마",
         desert: "사막",
         family: "가족",
         premium: "프리미엄",
+        adventure: "어드벤처",
         popularSort: "인기순",
         lowSort: "낮은 가격순",
         highSort: "높은 가격순",
@@ -127,14 +157,19 @@ export const copy = {
         allDuration: "全日程",
         shortDuration: "3〜4日",
         longDuration: "5日以上",
+        allDurationShort: "4泊以下",
+        allDurationLong: "5泊以上",
         allRegion: "全地域",
         gobi: "ゴビ",
+        south: "南部",
         central: "中央",
         north: "北部",
+        west: "西部",
         allTheme: "全テーマ",
         desert: "砂漠",
         family: "家族",
         premium: "プレミアム",
+        adventure: "アドベンチャー",
         popularSort: "人気順",
         lowSort: "低価格順",
         highSort: "高価格順",
@@ -203,14 +238,19 @@ export const copy = {
         allDuration: "All durations",
         shortDuration: "3–4 days",
         longDuration: "5+ days",
+        allDurationShort: "Up to 4 nights",
+        allDurationLong: "5+ nights",
         allRegion: "All regions",
         gobi: "Gobi",
+        south: "South",
         central: "Central",
         north: "North",
+        west: "West",
         allTheme: "All themes",
         desert: "Desert",
         family: "Family",
         premium: "Premium",
+        adventure: "Adventure",
         popularSort: "Most popular",
         lowSort: "Price: low to high",
         highSort: "Price: high to low",
@@ -267,13 +307,15 @@ export const copy = {
 export const tours: Tour[] = [
     {
         id: 1,
-        region: "gobi",
+        region: "south",
         theme: "desert",
         durationType: "long",
         price: 1690000,
-        deposit: 300000,
+        deposit: 50000,
         gradient: "from-blue-600 to-blue-400",
-        heroImage: "/images/hero-gobi.jpg",
+        heroImage: "/images/tour-gobi-5n6d.jpg",
+        images: ["/images/hero-gobi.jpg", "/images/tour-gobi-4n5d.jpg", "/images/tour-gobi-6n7d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
         title: { ko: "고비 사막 5박 6일", ja: "ゴビ砂漠 5泊6日", en: "Gobi Desert 5N6D" },
         desc: {
             ko: "가장 인기 있는 대표 코스. 사막, 협곡, 별보기, 게르 숙박까지 한 번에 즐깁니다.",
@@ -298,9 +340,11 @@ export const tours: Tour[] = [
         theme: "family",
         durationType: "short",
         price: 990000,
-        deposit: 200000,
+        deposit: 50000,
         gradient: "from-sky-900 to-blue-500",
-        heroImage: "/images/hero-terelj.jpg",
+        heroImage: "/images/tour-steppe-3n4d.jpg",
+        images: ["/images/hero-terelj.jpg", "/images/tour-steppe-2n3d.jpg", "/images/tour-steppe-4n5d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
         title: { ko: "테를지 · 미니사막 3박 4일", ja: "テレルジ・ミニ砂漠 3泊4日", en: "Terelj & Mini Desert 3N4D" },
         desc: {
             ko: "짧은 일정으로 몽골의 자연을 압축 체험할 수 있는 입문형 상품입니다.",
@@ -325,9 +369,11 @@ export const tours: Tour[] = [
         theme: "premium",
         durationType: "long",
         price: 2090000,
-        deposit: 400000,
+        deposit: 50000,
         gradient: "from-violet-700 to-indigo-400",
-        heroImage: "/images/hero-khuvsgul.jpg",
+        heroImage: "/images/tour-lake-6n7d.jpg",
+        images: ["/images/hero-khuvsgul.jpg", "/images/tour-lake-5n6d.jpg", "/images/tour-lake-7n8d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
         title: { ko: "홉스골 호수 6박 7일", ja: "フブスグル湖 6泊7日", en: "Khuvsgul Lake 6N7D" },
         desc: {
             ko: "북부 몽골의 고요한 호수와 숲 풍경을 중심으로 한 프리미엄 일정입니다.",
@@ -344,6 +390,387 @@ export const tours: Tour[] = [
             ko: ["홉스골 호수", "북부 숲", "프리미엄 동선", "자연 휴식"],
             ja: ["フブスグル湖", "北部の森", "プレミアムルート", "自然休息"],
             en: ["Khuvsgul Lake", "Northern Forest", "Premium Route", "Nature Retreat"],
+        },
+    },
+    // 남부 고비 사막 추가 투어
+    {
+        id: 4,
+        region: "south",
+        theme: "desert",
+        durationType: "short",
+        price: 1390000,
+        deposit: 50000,
+        gradient: "from-blue-600 to-blue-400",
+        heroImage: "/images/tour-gobi-4n5d.jpg",
+        images: ["/images/hero-gobi.jpg", "/images/tour-gobi-5n6d.jpg", "/images/tour-gobi-6n7d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "고비 사막 4박 5일", ja: "ゴビ砂漠 4泊5日", en: "Gobi Desert 4N5D" },
+        desc: {
+            ko: "사막과 협곡, 게르 숙박까지 고비의 핵심을 짧은 일정으로 압축한 상품입니다.",
+            ja: "砂漠と渓谷、ゲル宿泊まで短い日程でゴビの魅力を凝縮したコースです。",
+            en: "A condensed Gobi experience covering desert, canyon, and ger stay in a shorter schedule.",
+        },
+        tags: {
+            ko: ["사막", "게르 숙박", "별보기"],
+            ja: ["砂漠", "ゲル宿泊", "星空"],
+            en: ["Desert", "Ger Stay", "Stargazing"],
+        },
+        duration: { ko: "4박 5일", ja: "4泊5日", en: "4 nights 5 days" },
+        highlights: {
+            ko: ["고비 사막", "게르 숙박", "별보기", "협곡 산책"],
+            ja: ["ゴビ砂漠", "ゲル宿泊", "星空観察", "渓谷散策"],
+            en: ["Gobi Desert", "Ger Stay", "Stargazing", "Canyon Walk"],
+        },
+    },
+    {
+        id: 5,
+        region: "south",
+        theme: "desert",
+        durationType: "long",
+        price: 1990000,
+        deposit: 50000,
+        gradient: "from-blue-600 to-blue-400",
+        heroImage: "/images/tour-gobi-6n7d.jpg",
+        images: ["/images/hero-gobi.jpg", "/images/tour-gobi-4n5d.jpg", "/images/tour-gobi-7n8d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "고비 사막 6박 7일", ja: "ゴビ砂漠 6泊7日", en: "Gobi Desert 6N7D" },
+        desc: {
+            ko: "사막의 다양한 지형을 여유 있게 탐험하는 심화 고비 코스입니다.",
+            ja: "ゴビ砂漠の多様な地形をゆったり探検する上級コースです。",
+            en: "An in-depth Gobi route exploring the desert's diverse terrain at a relaxed pace.",
+        },
+        tags: {
+            ko: ["심화 코스", "낙타 투어", "게르"],
+            ja: ["上級コース", "ラクダツアー", "ゲル"],
+            en: ["In-depth", "Camel Tour", "Ger"],
+        },
+        duration: { ko: "6박 7일", ja: "6泊7日", en: "6 nights 7 days" },
+        highlights: {
+            ko: ["고비 사막", "낙타 투어", "모래언덕", "화석 지대"],
+            ja: ["ゴビ砂漠", "ラクダツアー", "砂丘", "化石地帯"],
+            en: ["Gobi Desert", "Camel Tour", "Sand Dunes", "Fossil Site"],
+        },
+    },
+    {
+        id: 6,
+        region: "south",
+        theme: "desert",
+        durationType: "long",
+        price: 2290000,
+        deposit: 50000,
+        gradient: "from-blue-600 to-blue-400",
+        heroImage: "/images/tour-gobi-7n8d.jpg",
+        images: ["/images/hero-gobi.jpg", "/images/tour-gobi-5n6d.jpg", "/images/tour-gobi-6n7d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "고비 사막 7박 8일", ja: "ゴビ砂漠 7泊8日", en: "Gobi Desert 7N8D" },
+        desc: {
+            ko: "고비의 끝에서 끝까지, 가장 완전한 고비 사막 탐험 코스입니다.",
+            ja: "ゴビの端から端まで、最も完全なゴビ砂漠探検コースです。",
+            en: "The most complete Gobi Desert expedition from end to end.",
+        },
+        tags: {
+            ko: ["완전 탐험", "낙타", "화석"],
+            ja: ["完全探検", "ラクダ", "化石"],
+            en: ["Full Expedition", "Camel", "Fossils"],
+        },
+        duration: { ko: "7박 8일", ja: "7泊8日", en: "7 nights 8 days" },
+        highlights: {
+            ko: ["홍고린 모래언덕", "화석 지대", "낙타 트레킹", "고비 전 지형"],
+            ja: ["ホンゴルイン砂丘", "化石地帯", "ラクダトレッキング", "ゴビ全地形"],
+            en: ["Khongoryn Sand Dunes", "Fossil Sites", "Camel Trekking", "Full Gobi Terrain"],
+        },
+    },
+    // 북부 호수 추가 투어
+    {
+        id: 7,
+        region: "north",
+        theme: "premium",
+        durationType: "short",
+        price: 1890000,
+        deposit: 50000,
+        gradient: "from-violet-700 to-indigo-400",
+        heroImage: "/images/tour-lake-4n5d.jpg",
+        images: ["/images/hero-khuvsgul.jpg", "/images/tour-lake-5n6d.jpg", "/images/tour-lake-6n7d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "북부 호수 4박 5일 항공", ja: "北部湖 4泊5日 航空", en: "North Lake 4N5D (Air)" },
+        desc: {
+            ko: "항공 이동으로 빠르게 북부 홉스골 호수를 경험하는 프리미엄 단기 코스입니다.",
+            ja: "航空移動で素早く北部フブスグル湖を体験するプレミアム短期コースです。",
+            en: "A premium short course reaching the northern Khuvsgul Lake quickly by air.",
+        },
+        tags: {
+            ko: ["항공", "호수", "프리미엄"],
+            ja: ["航空", "湖", "プレミアム"],
+            en: ["Air", "Lake", "Premium"],
+        },
+        duration: { ko: "4박 5일", ja: "4泊5日", en: "4 nights 5 days" },
+        highlights: {
+            ko: ["홉스골 호수", "항공 이동", "숲 트레킹", "보트 투어"],
+            ja: ["フブスグル湖", "航空移動", "森トレッキング", "ボートツアー"],
+            en: ["Khuvsgul Lake", "Flight Transfer", "Forest Trek", "Boat Tour"],
+        },
+    },
+    {
+        id: 8,
+        region: "north",
+        theme: "premium",
+        durationType: "long",
+        price: 1790000,
+        deposit: 50000,
+        gradient: "from-violet-700 to-indigo-400",
+        heroImage: "/images/tour-lake-5n6d.jpg",
+        images: ["/images/hero-khuvsgul.jpg", "/images/tour-lake-4n5d.jpg", "/images/tour-lake-7n8d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "북부 호수 5박 6일", ja: "北部湖 5泊6日", en: "North Lake 5N6D" },
+        desc: {
+            ko: "홉스골 호수와 주변 숲을 여유롭게 즐기는 북부 기본 코스입니다.",
+            ja: "フブスグル湖と周辺の森をゆっくり楽しむ北部基本コースです。",
+            en: "The standard northern route enjoying Khuvsgul Lake and the surrounding forest.",
+        },
+        tags: {
+            ko: ["호수", "자연", "승마"],
+            ja: ["湖", "自然", "乗馬"],
+            en: ["Lake", "Nature", "Horse Riding"],
+        },
+        duration: { ko: "5박 6일", ja: "5泊6日", en: "5 nights 6 days" },
+        highlights: {
+            ko: ["홉스골 호수", "숲 트레킹", "승마", "일몰 감상"],
+            ja: ["フブスグル湖", "森トレッキング", "乗馬", "夕日観賞"],
+            en: ["Khuvsgul Lake", "Forest Trek", "Horse Riding", "Sunset View"],
+        },
+    },
+    {
+        id: 9,
+        region: "north",
+        theme: "premium",
+        durationType: "long",
+        price: 2390000,
+        deposit: 50000,
+        gradient: "from-violet-700 to-indigo-400",
+        heroImage: "/images/tour-lake-7n8d.jpg",
+        images: ["/images/hero-khuvsgul.jpg", "/images/tour-lake-4n5d.jpg", "/images/tour-lake-5n6d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "북부 호수 7박 8일 기차 여행", ja: "北部湖 7泊8日 列車旅", en: "North Lake 7N8D (Train)" },
+        desc: {
+            ko: "울란바토르에서 기차로 출발해 북부 대자연을 여유롭게 탐험하는 특별한 여정입니다.",
+            ja: "ウランバートルから列車で出発し、北部の大自然をゆっくり探検する特別な旅です。",
+            en: "A special journey departing by train from Ulaanbaatar to explore northern Mongolia's vast nature.",
+        },
+        tags: {
+            ko: ["기차 여행", "호수", "특별 코스"],
+            ja: ["列車旅", "湖", "特別コース"],
+            en: ["Train Journey", "Lake", "Special Route"],
+        },
+        duration: { ko: "7박 8일", ja: "7泊8日", en: "7 nights 8 days" },
+        highlights: {
+            ko: ["기차 탑승", "홉스골 호수", "북부 숲", "유목민 체험"],
+            ja: ["列車乗車", "フブスグル湖", "北部の森", "遊牧民体験"],
+            en: ["Train Ride", "Khuvsgul Lake", "Northern Forest", "Nomad Experience"],
+        },
+    },
+    // 중부 초원 추가 투어
+    {
+        id: 10,
+        region: "central",
+        theme: "family",
+        durationType: "short",
+        price: 390000,
+        deposit: 50000,
+        gradient: "from-sky-900 to-blue-500",
+        heroImage: "/images/tour-steppe-1n2d.jpg",
+        images: ["/images/hero-terelj.jpg", "/images/tour-steppe-2n3d.jpg", "/images/tour-steppe-3n4d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "테를지 1박 2일", ja: "テレルジ 1泊2日", en: "Terelj 1N2D" },
+        desc: {
+            ko: "주말을 이용해 울란바토르 근교 테를지 국립공원을 가볍게 체험하는 입문 코스입니다.",
+            ja: "週末を使ってウランバートル近郊のテレルジ国立公園を気軽に体験する入門コースです。",
+            en: "A quick weekend getaway to Terelj National Park, just outside Ulaanbaatar.",
+        },
+        tags: {
+            ko: ["입문", "당일 가능", "가성비"],
+            ja: ["入門", "日帰り可", "コスパ"],
+            en: ["Intro", "Day Trip", "Value"],
+        },
+        duration: { ko: "1박 2일", ja: "1泊2日", en: "1 night 2 days" },
+        highlights: {
+            ko: ["테를지 국립공원", "게르 숙박", "승마 체험", "초원 산책"],
+            ja: ["テレルジ国立公園", "ゲル宿泊", "乗馬体験", "草原散策"],
+            en: ["Terelj Park", "Ger Stay", "Horse Riding", "Steppe Walk"],
+        },
+    },
+    {
+        id: 11,
+        region: "central",
+        theme: "family",
+        durationType: "short",
+        price: 590000,
+        deposit: 50000,
+        gradient: "from-sky-900 to-blue-500",
+        heroImage: "/images/tour-steppe-2n3d.jpg",
+        images: ["/images/hero-terelj.jpg", "/images/tour-steppe-1n2d.jpg", "/images/tour-steppe-3n4d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "테를지 2박 3일", ja: "テレルジ 2泊3日", en: "Terelj 2N3D" },
+        desc: {
+            ko: "테를지 초원에서 2박을 머물며 몽골 자연과 유목 문화를 여유 있게 경험합니다.",
+            ja: "テレルジ草原で2泊し、モンゴルの自然と遊牧文化をゆっくり体験します。",
+            en: "Two nights in the Terelj steppe to enjoy Mongolia's nature and nomadic culture at a relaxed pace.",
+        },
+        tags: {
+            ko: ["초원", "유목 문화", "가족"],
+            ja: ["草原", "遊牧文化", "家族"],
+            en: ["Steppe", "Nomad Culture", "Family"],
+        },
+        duration: { ko: "2박 3일", ja: "2泊3日", en: "2 nights 3 days" },
+        highlights: {
+            ko: ["테를지 초원", "게르 숙박", "유목 체험", "자연 산책"],
+            ja: ["テレルジ草원", "ゲル宿泊", "遊牧体験", "自然散策"],
+            en: ["Terelj Steppe", "Ger Stay", "Nomad Experience", "Nature Walk"],
+        },
+    },
+    {
+        id: 12,
+        region: "central",
+        theme: "family",
+        durationType: "short",
+        price: 1190000,
+        deposit: 50000,
+        gradient: "from-sky-900 to-blue-500",
+        heroImage: "/images/tour-steppe-4n5d.jpg",
+        images: ["/images/hero-terelj.jpg", "/images/tour-steppe-3n4d.jpg", "/images/tour-steppe-5n6d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "테를지 · 온천 · 미니사막 4박 5일", ja: "テレルジ・温泉・ミニ砂漠 4泊5日", en: "Terelj · Hot Spring · Mini Desert 4N5D" },
+        desc: {
+            ko: "테를지 초원, 천연 온천, 미니사막까지 중부 몽골의 다양한 자연을 담은 코스입니다.",
+            ja: "テレルジ草原、天然温泉、ミニ砂漠まで中部モンゴルの多様な自然を詰め込んだコースです。",
+            en: "A diverse route covering Terelj steppe, natural hot springs, and the mini desert of central Mongolia.",
+        },
+        tags: {
+            ko: ["온천", "미니사막", "가족"],
+            ja: ["温泉", "ミニ砂漠", "家族"],
+            en: ["Hot Spring", "Mini Desert", "Family"],
+        },
+        duration: { ko: "4박 5일", ja: "4泊5日", en: "4 nights 5 days" },
+        highlights: {
+            ko: ["테를지 국립공원", "천연 온천", "미니사막", "초원 승마"],
+            ja: ["テレルジ国立公園", "天然温泉", "ミニ砂漠", "草原乗馬"],
+            en: ["Terelj Park", "Natural Hot Spring", "Mini Desert", "Steppe Riding"],
+        },
+    },
+    {
+        id: 13,
+        region: "central",
+        theme: "family",
+        durationType: "long",
+        price: 1490000,
+        deposit: 50000,
+        gradient: "from-sky-900 to-blue-500",
+        heroImage: "/images/tour-steppe-5n6d.jpg",
+        images: ["/images/hero-terelj.jpg", "/images/tour-steppe-3n4d.jpg", "/images/tour-steppe-4n5d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "어기 호수 · 테를지 5박 6일", ja: "オギ湖・テレルジ 5泊6日", en: "Ogii Lake · Terelj 5N6D" },
+        desc: {
+            ko: "어기 호수 철새와 테를지 초원, 온천, 미니사막, 폭포까지 중부 대표 코스입니다.",
+            ja: "オギ湖の渡り鳥、テレルジ草原、温泉、ミニ砂漠、滝まで中部代表コースです。",
+            en: "The signature central Mongolia route covering Ogii Lake birds, Terelj steppe, hot springs, mini desert, and waterfall.",
+        },
+        tags: {
+            ko: ["어기 호수", "철새", "폭포"],
+            ja: ["オギ湖", "渡り鳥", "滝"],
+            en: ["Ogii Lake", "Migratory Birds", "Waterfall"],
+        },
+        duration: { ko: "5박 6일", ja: "5泊6日", en: "5 nights 6 days" },
+        highlights: {
+            ko: ["어기 호수", "테를지", "천연 온천", "미니사막", "폭포"],
+            ja: ["オギ湖", "テレルジ", "天然温泉", "ミニ砂漠", "滝"],
+            en: ["Ogii Lake", "Terelj", "Hot Spring", "Mini Desert", "Waterfall"],
+        },
+    },
+    // 서부 알타이 투어
+    {
+        id: 14,
+        region: "west",
+        theme: "adventure",
+        durationType: "long",
+        price: 2490000,
+        deposit: 50000,
+        gradient: "from-amber-700 to-orange-500",
+        heroImage: "/images/tour-altai-zavkhan.jpg",
+        images: ["/images/hero-altai.jpg", "/images/tour-altai-air.jpg", "/images/tour-altai-12n13d.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "자브항 7박 8일", ja: "ザブハン 7泊8日", en: "Zavkhan 7N8D" },
+        desc: {
+            ko: "서부 몽골 자브항 지역의 대자연과 유목 문화를 탐험하는 어드벤처 코스입니다.",
+            ja: "西モンゴルのザブハン地域の大自然と遊牧文化を探検するアドベンチャーコースです。",
+            en: "An adventure route exploring the vast nature and nomadic culture of the Zavkhan region in western Mongolia.",
+        },
+        tags: {
+            ko: ["어드벤처", "자브항", "유목"],
+            ja: ["アドベンチャー", "ザブハン", "遊牧"],
+            en: ["Adventure", "Zavkhan", "Nomad"],
+        },
+        duration: { ko: "7박 8일", ja: "7泊8日", en: "7 nights 8 days" },
+        highlights: {
+            ko: ["자브항 강", "유목 캠프", "승마 트레킹", "서부 초원"],
+            ja: ["ザブハン川", "遊牧キャンプ", "乗馬トレッキング", "西部草原"],
+            en: ["Zavkhan River", "Nomad Camp", "Horse Trekking", "Western Steppe"],
+        },
+    },
+    {
+        id: 15,
+        region: "west",
+        theme: "adventure",
+        durationType: "long",
+        price: 3990000,
+        deposit: 50000,
+        gradient: "from-amber-700 to-orange-500",
+        heroImage: "/images/tour-altai-12n13d.jpg",
+        images: ["/images/hero-altai.jpg", "/images/tour-altai-zavkhan.jpg", "/images/tour-altai-air.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "알타이 산맥 12박 13일", ja: "アルタイ山脈 12泊13日", en: "Altai Mountains 12N13D" },
+        desc: {
+            ko: "몽골 서부 알타이 산맥을 완전히 탐험하는 최장기 프리미엄 어드벤처 코스입니다.",
+            ja: "モンゴル西部アルタイ山脈を完全に探検する最長期プレミアムアドベンチャーコースです。",
+            en: "The longest premium adventure route fully exploring the Altai Mountains of western Mongolia.",
+        },
+        tags: {
+            ko: ["최장기", "알타이", "독수리 사냥"],
+            ja: ["最長期", "アルタイ", "鷹狩り"],
+            en: ["Longest", "Altai", "Eagle Hunting"],
+        },
+        duration: { ko: "12박 13일", ja: "12泊13日", en: "12 nights 13 days" },
+        highlights: {
+            ko: ["알타이 산맥", "독수리 사냥 문화", "카자흐 유목민", "산악 트레킹"],
+            ja: ["アルタイ山脈", "鷹狩り文化", "カザフ遊牧民", "山岳トレッキング"],
+            en: ["Altai Mountains", "Eagle Hunting Culture", "Kazakh Nomads", "Mountain Trekking"],
+        },
+    },
+    {
+        id: 16,
+        region: "west",
+        theme: "adventure",
+        durationType: "long",
+        price: 2890000,
+        deposit: 50000,
+        gradient: "from-amber-700 to-orange-500",
+        heroImage: "/images/tour-altai-air.jpg",
+        images: ["/images/hero-altai.jpg", "/images/tour-altai-12n13d.jpg", "/images/tour-altai-zavkhan.jpg"],
+        detailImages: ["/images/detail-sample.jpg"],
+        title: { ko: "알타이 산맥 항공 7박 8일", ja: "アルタイ山脈 航空 7泊8日", en: "Altai Mountains 7N8D (Air)" },
+        desc: {
+            ko: "항공으로 빠르게 이동해 알타이 산맥의 핵심을 압축 탐험하는 코스입니다.",
+            ja: "航空で素早く移動してアルタイ山脈の核心を凝縮探検するコースです。",
+            en: "A condensed Altai Mountains expedition with fast air transfers to the key highlights.",
+        },
+        tags: {
+            ko: ["항공", "알타이", "압축 탐험"],
+            ja: ["航空", "アルタイ", "凝縮探検"],
+            en: ["Air", "Altai", "Condensed"],
+        },
+        duration: { ko: "7박 8일", ja: "7泊8日", en: "7 nights 8 days" },
+        highlights: {
+            ko: ["알타이 산맥", "항공 이동", "독수리 문화", "카자흐 유목"],
+            ja: ["アルタイ山脈", "航空移動", "鷹狩り文化", "カザフ遊牧"],
+            en: ["Altai Mountains", "Air Transfer", "Eagle Culture", "Kazakh Nomads"],
         },
     },
 ];
@@ -431,19 +858,349 @@ export const faq = {
 
 export const community: Record<Locale, CommunityItem[]> = {
     ko: [
-        { type: "mate", author: "Mina", text: "7월 고비 사막 투어 가시는 분 있나요? 준비물 추천 부탁드려요!" },
-        { type: "qna", author: "BlueWolf", text: "밤에는 추울 수 있어 얇은 패딩과 보조배터리를 꼭 챙겨주세요." },
-        { type: "review", author: "Jisu", text: "테를지 3박 4일 다녀왔는데 부모님과 함께 가기에도 정말 좋았어요." },
+        {
+            id: 1, type: "review", author: "김지수", date: "2025-07-12", likes: 24,
+            rating: 5, tourTitle: "고비 사막 5박 6일",
+            text: "정말 인생 여행이었습니다! 밤하늘 별이 너무 아름다웠고 가이드 선생님도 친절하셨어요. 게르에서 자는 것도 색다른 경험이었습니다. 꼭 다시 오고 싶어요!",
+            photos: ["/images/tour-gobi-4n5d.jpg", "/images/tour-gobi-6n7d.jpg", "/images/tour-gobi-7n8d.jpg"],
+            comments: [
+                { author: "이민아", text: "저도 같은 투어 다녀왔는데 정말 최고였어요!", date: "2025-07-13" },
+                { author: "박준영", text: "별보기 포인트가 어디였나요? 저도 가보고 싶어요", date: "2025-07-14" },
+            ],
+        },
+        {
+            id: 2, type: "review", author: "Yuki", date: "2025-06-28", likes: 18,
+            rating: 5, tourTitle: "홉스골 호수 6박 7일",
+            text: "홉스골 호수의 풍경은 정말 숨막히게 아름다웠습니다. 가족과 함께 갔는데 모두 만족했어요. 블루울프 가이드의 세심한 배려 덕분에 불편함 없이 여행할 수 있었습니다.",
+            comments: [
+                { author: "최현준", text: "아이들도 좋아했나요? 저도 가족여행 계획 중이에요", date: "2025-06-29" },
+            ],
+        },
+        {
+            id: 3, type: "review", author: "박지혜", date: "2025-06-15", likes: 32,
+            rating: 4, tourTitle: "알타이 황금 독수리 12박 13일",
+            text: "독수리 축제 기간에 맞춰 갔는데 정말 잊을 수 없는 경험이었어요. 다만 이동 시간이 길어서 체력적으로 좀 힘들었습니다. 그래도 충분히 가치 있었어요.",
+            photos: ["/images/hero-altai.jpg", "/images/tour-altai-12n13d.jpg", "/images/tour-altai-air.jpg", "/images/tour-altai-zavkhan.jpg"],
+            comments: [],
+        },
+        {
+            id: 4, type: "review", author: "이준호", date: "2025-05-20", likes: 15,
+            rating: 5, tourTitle: "테를지 · 미니사막 3박 4일",
+            text: "처음 몽골 여행을 블루울프와 함께했는데 정말 잘한 선택이었습니다. 짧은 일정이지만 몽골의 매력을 충분히 느낄 수 있었어요.",
+            comments: [
+                { author: "신미래", text: "입문자에게 적합한 코스인가요?", date: "2025-05-21" },
+                { author: "이준호", text: "네! 처음 가시는 분들께 강추드려요 😊", date: "2025-05-21" },
+            ],
+        },
+        {
+            id: 5, type: "review", author: "홍서연", date: "2025-04-10", likes: 41,
+            rating: 5, tourTitle: "차강소브라가 · 욜링암 4박 5일",
+            text: "욜링암 협곡의 절경은 사진으로는 다 담을 수 없어요. 실제로 보면 훨씬 더 웅장합니다. 차강소브라가 백사막도 정말 신비로웠고요. 사진 좋아하시는 분들께 강추!",
+            photos: ["/images/hero-gobi.jpg", "/images/tour-gobi-5n6d.jpg", "/images/tour-gobi-6n7d.jpg"],
+            comments: [],
+        },
+        {
+            id: 6, type: "mate", author: "강민준", date: "2025-07-20", likes: 8,
+            tourTitle: "고비 사막 5박 6일", travelDate: "2025-08-15",
+            maxPeople: 4, currentPeople: 2, travelRegion: "남부",
+            text: "8월 15일 고비 사막 5박 6일 같이 가실 분 찾습니다! 현재 2명 확정이고 2명 더 모집 중이에요. 20~30대 환영합니다. 오픈채팅방 참여 원하시면 댓글 달아주세요 😊",
+            comments: [
+                { author: "정예린", text: "저 참여하고 싶어요! 연락처 공유해주실 수 있나요?", date: "2025-07-21" },
+            ],
+        },
+        {
+            id: 7, type: "mate", author: "오수빈", date: "2025-07-18", likes: 5,
+            tourTitle: "홉스골 호수 6박 7일", travelDate: "2025-08-20",
+            maxPeople: 3, currentPeople: 1, travelRegion: "북부",
+            text: "홉스골 6박 7일 같이 가실 분! 저 혼자 신청했는데 같이 가면 더 재미있을 것 같아서요. 자연 좋아하고 사진 찍는 거 좋아하시는 분이면 환영해요.",
+            comments: [],
+        },
+        {
+            id: 8, type: "mate", author: "임태양", date: "2025-07-10", likes: 12,
+            tourTitle: "알타이 황금 독수리 12박 13일", travelDate: "2025-09-05",
+            maxPeople: 6, currentPeople: 4, travelRegion: "서부",
+            text: "9월 5일 알타이 장기 투어 함께하실 분 2명 더 모집합니다. 독수리 축제와 카자흐족 문화를 경험하고 싶으신 분들께 추천드려요. 현재 4명 확정, 6명 정원.",
+            comments: [
+                { author: "최유나", text: "정원이 차면 추가 모집 안 하시나요?", date: "2025-07-11" },
+                { author: "임태양", text: "인원이 차면 모집 마감할게요! 서두르세요~", date: "2025-07-11" },
+            ],
+        },
+        {
+            id: 9, type: "mate", author: "윤채원", date: "2025-07-05", likes: 7,
+            tourTitle: "차강소브라가 · 욜링암 4박 5일", travelDate: "2025-08-01",
+            maxPeople: 4, currentPeople: 3, travelRegion: "남부",
+            text: "8월 1일 출발 욜링암 투어 1명 더 모집합니다! 3명이 같이 가는데 한 분 더 함께하면 좋겠어요. 여성 여행자 우대(혼자 오시는 분도 환영).",
+            comments: [],
+        },
+        {
+            id: 10, type: "mate", author: "배현우", date: "2025-06-30", likes: 3,
+            tourTitle: "초원 · 테를지 1박 2일", travelDate: "2025-07-28",
+            maxPeople: 4, currentPeople: 2, travelRegion: "중부",
+            text: "짧게 다녀오실 분들! 7월 28~29일 1박 2일 테를지 투어 같이 가실 분 모집합니다. 주말 여행으로 딱 좋아요.",
+            comments: [],
+        },
+        {
+            id: 11, type: "qna", author: "김여행", date: "2025-07-19", likes: 6,
+            answered: true,
+            text: "몽골 여행 시 비자가 필요한가요? 한국 여권으로 무비자 입국이 가능한지 궁금합니다.",
+            comments: [
+                { author: "BlueWolf", text: "안녕하세요! 한국 여권 소지자는 몽골 입국 시 30일 무비자 체류가 가능합니다. 여권 유효기간이 6개월 이상 남아있어야 하니 확인해 주세요 😊", date: "2025-07-19" },
+            ],
+        },
+        {
+            id: 12, type: "qna", author: "여행준비중", date: "2025-07-17", likes: 9,
+            answered: true,
+            text: "8월에 고비 사막 투어 예정인데 준비물로 꼭 챙겨야 할 것들이 있을까요?",
+            comments: [
+                { author: "BlueWolf", text: "8월은 낮에 덥고 밤에 추울 수 있어요. 얇은 패딩, 선크림(SPF50+ 추천), 모자, 선글라스, 보조배터리, 상비약을 꼭 챙기세요. 모래바람 대비 마스크도 유용합니다!", date: "2025-07-17" },
+                { author: "박지민", text: "저도 8월에 가는데 도움이 됐어요 감사합니다!", date: "2025-07-18" },
+            ],
+        },
+        {
+            id: 13, type: "qna", author: "초보여행자", date: "2025-07-14", likes: 4,
+            answered: true,
+            text: "혼자 여행해도 괜찮을까요? 현지에서 안전한 편인가요?",
+            comments: [
+                { author: "BlueWolf", text: "몽골은 비교적 안전한 여행지입니다. 블루울프 투어는 전 일정 가이드가 동행하기 때문에 혼자 오시는 분들도 많이 이용하세요. 안심하고 오세요!", date: "2025-07-14" },
+            ],
+        },
+        {
+            id: 14, type: "qna", author: "가족여행계획", date: "2025-07-08", likes: 11,
+            answered: false,
+            text: "초등학생 아이 2명과 함께 가려고 하는데 어떤 코스가 가장 적합할까요? 이동 거리나 난이도가 걱정됩니다.",
+            comments: [],
+        },
+        {
+            id: 15, type: "qna", author: "환율궁금", date: "2025-07-02", likes: 7,
+            answered: true,
+            text: "현지에서 현금이 필요한가요? 신용카드 사용이 가능한지, 환전은 어떻게 해야 하는지 알고 싶어요.",
+            comments: [
+                { author: "BlueWolf", text: "울란바토르 시내 마트와 일부 식당은 카드 사용이 가능하지만, 지방 여행 시에는 현금(투그릭)이 필수입니다. 공항이나 시내 환전소에서 달러→투그릭으로 환전하시거나, 한국에서 달러를 미리 준비해 오시는 것을 권장합니다.", date: "2025-07-02" },
+            ],
+        },
     ],
     ja: [
-        { type: "mate", author: "Mina", text: "7月のゴビ砂漠ツアーに行く方いますか？持ち物のおすすめを知りたいです。" },
-        { type: "qna", author: "BlueWolf", text: "夜は冷えるので、薄手のダウンとモバイルバッテリーをおすすめします。" },
-        { type: "review", author: "Jisu", text: "テレルジ3泊4日、両親と一緒でもとても快適でした。" },
+        {
+            id: 1, type: "review", author: "田中さゆり", date: "2025-07-12", likes: 24,
+            rating: 5, tourTitle: "ゴビ砂漠 5泊6日",
+            text: "本当に人生旅行でした！夜空の星がとても美しく、ガイドさんもとても親切でした。ゲルに泊まる体験も新鮮でした。また絶対来たいです！",
+            photos: ["/images/tour-gobi-4n5d.jpg", "/images/tour-gobi-6n7d.jpg", "/images/tour-gobi-7n8d.jpg"],
+            comments: [
+                { author: "鈴木みなこ", text: "私も同じツアーに行きましたが本当に最高でした！", date: "2025-07-13" },
+            ],
+        },
+        {
+            id: 2, type: "review", author: "Yuki", date: "2025-06-28", likes: 18,
+            rating: 5, tourTitle: "フブスグル湖 6泊7日",
+            text: "フブスグル湖の景色は息をのむほど美しかったです。家族みんな大満足でした。BlueWolfガイドの細やかな配慮のおかげで快適に旅できました。",
+            comments: [],
+        },
+        {
+            id: 3, type: "review", author: "山田花子", date: "2025-06-15", likes: 32,
+            rating: 4, tourTitle: "アルタイ・鷹匠ツアー 12泊13日",
+            text: "鷹祭りの時期に合わせて行きましたが忘れられない経験でした。移動時間が長く体力的に少しきつかったですが、十分価値がありました。",
+            photos: ["/images/hero-altai.jpg", "/images/tour-altai-12n13d.jpg", "/images/tour-altai-air.jpg", "/images/tour-altai-zavkhan.jpg"],
+            comments: [],
+        },
+        {
+            id: 4, type: "review", author: "佐藤ゆうき", date: "2025-05-20", likes: 15,
+            rating: 5, tourTitle: "テレルジ・ミニ砂漠 3泊4日",
+            text: "初めてのモンゴル旅行をBlueWolfと一緒に楽しみました。短い日程でもモンゴルの魅力を十分に感じることができました。",
+            comments: [],
+        },
+        {
+            id: 5, type: "review", author: "中村あかり", date: "2025-04-10", likes: 41,
+            rating: 5, tourTitle: "ヨーリン・アム渓谷 4泊5日",
+            text: "ヨーリン・アムの絶景は写真では収まりきりません。実際に見るともっと雄大です。白砂漠もとても神秘的でした。写真好きの方に強くおすすめ！",
+            photos: ["/images/hero-gobi.jpg", "/images/tour-gobi-5n6d.jpg", "/images/tour-gobi-6n7d.jpg"],
+            comments: [],
+        },
+        {
+            id: 6, type: "mate", author: "カン・ミンジュン", date: "2025-07-20", likes: 8,
+            tourTitle: "ゴビ砂漠 5泊6日", travelDate: "2025-08-15",
+            maxPeople: 4, currentPeople: 2, travelRegion: "南部",
+            text: "8月15日ゴビ砂漠ツアー同行者募集！現在2名確定、あと2名募集中。20〜30代歓迎。一緒に行きたい方はコメントください😊",
+            comments: [],
+        },
+        {
+            id: 7, type: "mate", author: "オ・スビン", date: "2025-07-18", likes: 5,
+            tourTitle: "フブスグル湖 6泊7日", travelDate: "2025-08-20",
+            maxPeople: 3, currentPeople: 1, travelRegion: "北部",
+            text: "フブスグル6泊7日一緒に行く方募集！一人で申し込みましたが一緒に行けたらもっと楽しそう。自然が好きで写真好きな方大歓迎。",
+            comments: [],
+        },
+        {
+            id: 8, type: "mate", author: "イム・テヤン", date: "2025-07-10", likes: 12,
+            tourTitle: "アルタイ・鷹匠ツアー 12泊13日", travelDate: "2025-09-05",
+            maxPeople: 6, currentPeople: 4, travelRegion: "西部",
+            text: "9月5日アルタイ長期ツアーの同行者をあと2名募集！鷹祭りとカザフ文化を体験したい方におすすめです。",
+            comments: [],
+        },
+        {
+            id: 9, type: "mate", author: "ユン・チェウォン", date: "2025-07-05", likes: 7,
+            tourTitle: "ヨーリン・アム渓谷 4泊5日", travelDate: "2025-08-01",
+            maxPeople: 4, currentPeople: 3, travelRegion: "南部",
+            text: "8月1日出発ヨーリン・アムツアーあと1名募集！3名で行きますがもう1名一緒に行けたら嬉しいです。",
+            comments: [],
+        },
+        {
+            id: 10, type: "mate", author: "ペ・ヒョヌ", date: "2025-06-30", likes: 3,
+            tourTitle: "テレルジ1泊2日", travelDate: "2025-07-28",
+            maxPeople: 4, currentPeople: 2, travelRegion: "中央",
+            text: "週末旅行！7月28〜29日テレルジ1泊2日一緒に行く方募集。気軽に参加できます！",
+            comments: [],
+        },
+        {
+            id: 11, type: "qna", author: "旅行準備中", date: "2025-07-19", likes: 6,
+            answered: true,
+            text: "モンゴル旅行にビザは必要ですか？日本のパスポートでビザなしで入国できますか？",
+            comments: [
+                { author: "BlueWolf", text: "日本のパスポートでモンゴルへは30日間ビザなしで入国できます。パスポートの残存有効期間が6か月以上あることをご確認ください😊", date: "2025-07-19" },
+            ],
+        },
+        {
+            id: 12, type: "qna", author: "山本けんじ", date: "2025-07-17", likes: 9,
+            answered: true,
+            text: "8月にゴビ砂漠ツアーを予定していますが、必ず持っていくべきものはありますか？",
+            comments: [
+                { author: "BlueWolf", text: "8月は昼間暑く夜寒くなります。薄手のダウン、日焼け止め(SPF50+推奨)、帽子、サングラス、モバイルバッテリー、常備薬は必須です。砂嵐対策のマスクも便利ですよ！", date: "2025-07-17" },
+            ],
+        },
+        {
+            id: 13, type: "qna", author: "初心者旅行者", date: "2025-07-14", likes: 4,
+            answered: true,
+            text: "一人旅でも大丈夫でしょうか？現地は安全ですか？",
+            comments: [
+                { author: "BlueWolf", text: "モンゴルは比較的安全な旅行地です。BlueWolfのツアーは全日程ガイドが同行するので、一人旅のお客様も多くご利用いただいています。安心してお越しください！", date: "2025-07-14" },
+            ],
+        },
+        {
+            id: 14, type: "qna", author: "ファミリー計画", date: "2025-07-08", likes: 11,
+            answered: false,
+            text: "小学生の子供2人と一緒に行きたいのですが、どのコースが一番適していますか？移動距離や難易度が心配です。",
+            comments: [],
+        },
+        {
+            id: 15, type: "qna", author: "為替気になる", date: "2025-07-02", likes: 7,
+            answered: true,
+            text: "現地では現金が必要ですか？クレジットカードは使えますか？両替はどうすればいいですか？",
+            comments: [
+                { author: "BlueWolf", text: "ウランバートル市内のスーパーや一部レストランではカードが使えますが、地方ではトゥグルグの現金が必須です。空港や市内両替所でドル→トゥグルグへの両替をお勧めします。", date: "2025-07-02" },
+            ],
+        },
     ],
     en: [
-        { type: "mate", author: "Mina", text: "Anyone joining the July Gobi tour? Would love packing tips!" },
-        { type: "qna", author: "BlueWolf", text: "It gets cold at night, so bring a light padded jacket and a power bank." },
-        { type: "review", author: "Jisu", text: "I joined the 3N4D Terelj tour and it was also great for traveling with parents." },
+        {
+            id: 1, type: "review", author: "Kim Jisu", date: "2025-07-12", likes: 24,
+            rating: 5, tourTitle: "Gobi Desert 5N6D",
+            text: "Truly a trip of a lifetime! The night sky was breathtaking and our guide was incredibly kind. Sleeping in a ger was such a unique experience. I absolutely want to come back!",
+            photos: ["/images/tour-gobi-4n5d.jpg", "/images/tour-gobi-6n7d.jpg", "/images/tour-gobi-7n8d.jpg"],
+            comments: [
+                { author: "Lee Mina", text: "I was on the same tour and it was absolutely amazing!", date: "2025-07-13" },
+                { author: "Park Junyoung", text: "Where was the stargazing spot? I'd love to visit!", date: "2025-07-14" },
+            ],
+        },
+        {
+            id: 2, type: "review", author: "Yuki", date: "2025-06-28", likes: 18,
+            rating: 5, tourTitle: "Khuvsgul Lake 6N7D",
+            text: "The views at Khuvsgul Lake were breathtaking. My whole family loved it. Thanks to BlueWolf's attentive guides, we traveled without any inconvenience.",
+            comments: [],
+        },
+        {
+            id: 3, type: "review", author: "Sarah", date: "2025-06-15", likes: 32,
+            rating: 4, tourTitle: "Altai Eagle Hunter 12N13D",
+            text: "We went during the eagle festival season — an unforgettable experience! The long travel times were a bit tiring but absolutely worth it.",
+            photos: ["/images/hero-altai.jpg", "/images/tour-altai-12n13d.jpg", "/images/tour-altai-air.jpg", "/images/tour-altai-zavkhan.jpg"],
+            comments: [],
+        },
+        {
+            id: 4, type: "review", author: "James", date: "2025-05-20", likes: 15,
+            rating: 5, tourTitle: "Terelj & Mini Desert 3N4D",
+            text: "My first Mongolia trip with BlueWolf was a great choice. Even the short itinerary let me fully experience Mongolia's charm.",
+            comments: [],
+        },
+        {
+            id: 5, type: "review", author: "Emily", date: "2025-04-10", likes: 41,
+            rating: 5, tourTitle: "Yol Am Canyon 4N5D",
+            text: "The scenery at Yol Am Canyon can't be captured in photos — it's so much grander in person. The white desert was absolutely magical. Highly recommended for photographers!",
+            photos: ["/images/hero-gobi.jpg", "/images/tour-gobi-5n6d.jpg", "/images/tour-gobi-6n7d.jpg"],
+            comments: [],
+        },
+        {
+            id: 6, type: "mate", author: "Kevin", date: "2025-07-20", likes: 8,
+            tourTitle: "Gobi Desert 5N6D", travelDate: "2025-08-15",
+            maxPeople: 4, currentPeople: 2, travelRegion: "South",
+            text: "Looking for 2 more people for the Aug 15 Gobi Desert tour! Currently 2 confirmed, looking for 2 more. 20s-30s welcome. Drop a comment if you're interested 😊",
+            comments: [
+                { author: "Rachel", text: "I'd love to join! Can you share contact details?", date: "2025-07-21" },
+            ],
+        },
+        {
+            id: 7, type: "mate", author: "Amy", date: "2025-07-18", likes: 5,
+            tourTitle: "Khuvsgul Lake 6N7D", travelDate: "2025-08-20",
+            maxPeople: 3, currentPeople: 1, travelRegion: "North",
+            text: "Looking for travel companions for the Khuvsgul Lake 6N7D tour! I booked solo but would love to go with others. Nature lovers and photo enthusiasts welcome!",
+            comments: [],
+        },
+        {
+            id: 8, type: "mate", author: "Chris", date: "2025-07-10", likes: 12,
+            tourTitle: "Altai Eagle Hunter 12N13D", travelDate: "2025-09-05",
+            maxPeople: 6, currentPeople: 4, travelRegion: "West",
+            text: "Looking for 2 more people for the Sep 5 Altai long tour. Great for those wanting to experience the eagle festival and Kazakh culture. Currently 4/6 spots filled.",
+            comments: [],
+        },
+        {
+            id: 9, type: "mate", author: "Linda", date: "2025-07-05", likes: 7,
+            tourTitle: "Yol Am Canyon 4N5D", travelDate: "2025-08-01",
+            maxPeople: 4, currentPeople: 3, travelRegion: "South",
+            text: "Looking for 1 more person for our Aug 1 departure! We're a group of 3 and would love one more companion. Solo female travelers welcome!",
+            comments: [],
+        },
+        {
+            id: 10, type: "mate", author: "Tom", date: "2025-06-30", likes: 3,
+            tourTitle: "Terelj 1N2D", travelDate: "2025-07-28",
+            maxPeople: 4, currentPeople: 2, travelRegion: "Central",
+            text: "Weekend getaway! Looking for 2 more for a Terelj 1N2D trip on July 28-29. Perfect for a casual weekend trip!",
+            comments: [],
+        },
+        {
+            id: 11, type: "qna", author: "TravelNewbie", date: "2025-07-19", likes: 6,
+            answered: true,
+            text: "Do I need a visa to travel to Mongolia? Can South Korean passport holders enter visa-free?",
+            comments: [
+                { author: "BlueWolf", text: "Korean passport holders can stay in Mongolia for up to 30 days without a visa. Please make sure your passport has at least 6 months of validity remaining 😊", date: "2025-07-19" },
+            ],
+        },
+        {
+            id: 12, type: "qna", author: "August Traveler", date: "2025-07-17", likes: 9,
+            answered: true,
+            text: "I'm planning the Gobi Desert tour in August. What are the must-have items to pack?",
+            comments: [
+                { author: "BlueWolf", text: "August days are hot but nights can be cold. Must-haves: light padded jacket, SPF50+ sunscreen, hat, sunglasses, power bank, and basic medicine. A dust mask is also useful for sandstorms!", date: "2025-07-17" },
+            ],
+        },
+        {
+            id: 13, type: "qna", author: "SoloExplorer", date: "2025-07-14", likes: 4,
+            answered: true,
+            text: "Is it okay to travel solo? Is Mongolia safe?",
+            comments: [
+                { author: "BlueWolf", text: "Mongolia is a relatively safe destination. BlueWolf tours have guides accompanying every day, so many solo travelers use our service. Feel free to come alone!", date: "2025-07-14" },
+            ],
+        },
+        {
+            id: 14, type: "qna", author: "FamilyPlanner", date: "2025-07-08", likes: 11,
+            answered: false,
+            text: "I want to go with 2 elementary school kids. Which route is best suited for families? I'm worried about travel distance and difficulty.",
+            comments: [],
+        },
+        {
+            id: 15, type: "qna", author: "CurrencyQ", date: "2025-07-02", likes: 7,
+            answered: true,
+            text: "Do I need cash in Mongolia? Can I use a credit card? How should I handle currency exchange?",
+            comments: [
+                { author: "BlueWolf", text: "Supermarkets and some restaurants in Ulaanbaatar accept cards, but cash (Tugrik) is essential for rural travel. We recommend exchanging USD→Tugrik at the airport or city exchange offices.", date: "2025-07-02" },
+            ],
+        },
     ],
 };
 

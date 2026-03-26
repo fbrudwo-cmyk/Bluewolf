@@ -43,7 +43,6 @@ export function AboutPageTemplate({
     const headerCopy = copy[locale];
     const navItems = buildHeaderNav({
         locale,
-        pageType: "about",
         t: headerCopy,
     });
 
@@ -160,7 +159,7 @@ export function AboutPageTemplate({
 
                     <div className="mt-6 flex flex-wrap gap-3">
                         <Link
-                            href="/#tours"
+                            href="/tours"
                             className="rounded-2xl bg-white px-5 py-4 font-bold text-slate-900 transition hover:bg-slate-100"
                         >
                             {t.ctaPrimary}

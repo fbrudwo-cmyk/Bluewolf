@@ -1,5 +1,6 @@
 import "./globals.css";
 import localFont from "next/font/local";
+import { ScrollRestorer } from "@/components/layout/ScrollRestorer";
 
 const notoSansCJK = localFont({
     src: [
@@ -38,6 +39,7 @@ export default function RootLayout({
         <html lang="ko" suppressHydrationWarning>
             <body className={notoSansCJK.variable}>
                 <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+                <ScrollRestorer />
                 {children}
             </body>
         </html>

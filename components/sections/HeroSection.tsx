@@ -4,16 +4,16 @@ import { copy, type HeroSlide, type Locale } from "@/lib/bluewolf-data";
 type CopyValue = (typeof copy)[Locale];
 
 const primaryButton =
-    "group relative overflow-hidden rounded-2xl bg-blue-600 px-4 py-3 font-bold text-white shadow-[0_10px_24px_rgba(37,99,235,0.22)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-blue-500 sm:px-5 sm:py-4";
+    "group relative overflow-hidden rounded-2xl bg-blue-600 px-4 py-3 font-bold text-white shadow-[0_10px_24px_rgba(37,99,235,0.22)] transition-[transform,background-color,box-shadow] duration-700 ease-in-out hover:-translate-y-[3px] hover:bg-blue-500 hover:shadow-[0_14px_28px_rgba(37,99,235,0.32)] active:scale-[0.97] active:translate-y-0 sm:px-5 sm:py-4";
 
 const secondaryButton =
-    "group relative overflow-hidden rounded-2xl px-4 py-3 font-bold transition-all duration-300 hover:-translate-y-0.5 sm:px-5 sm:py-4";
+    "group relative overflow-hidden rounded-2xl px-4 py-3 font-bold transition-[transform,background-color] duration-700 ease-in-out hover:-translate-y-[3px] active:scale-[0.97] active:translate-y-0 sm:px-5 sm:py-4";
 
 const overlaySpan =
-    "pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.22),transparent_60%)]";
+    "pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-200 group-hover:opacity-100 bg-[radial-gradient(circle_at_top,rgba(255,255,255,0.22),transparent_60%)]";
 
 const shineSpan =
-    "pointer-events-none absolute inset-y-0 left-[-30%] w-[40%] -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-0 transition-all duration-700 group-hover:left-[120%] group-hover:opacity-100";
+    "pointer-events-none absolute inset-y-0 left-[-30%] w-[40%] -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-0 transition-[left,opacity] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:left-[120%] group-hover:opacity-100";
 
 export function HeroSection({
     t,
@@ -48,7 +48,7 @@ export function HeroSection({
                 {hero.map((slide, index) => (
                     <div
                         key={`${slide.eyebrow}-${index}`}
-                        className={`absolute inset-0 transition-all duration-700 ${
+                        className={`absolute inset-0 transition-opacity duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                             index === slideIndex ? "opacity-100" : "pointer-events-none opacity-0"
                         }`}
                     >
@@ -121,7 +121,7 @@ export function HeroSection({
                                     <button
                                         key={index}
                                         onClick={() => setSlideIndex(index)}
-                                        className={`h-2.5 rounded-full transition-all ${
+                                        className={`h-2.5 rounded-full transition-[width,background-color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${
                                             index === slideIndex
                                                 ? "w-8 bg-blue-600"
                                                 : isDark

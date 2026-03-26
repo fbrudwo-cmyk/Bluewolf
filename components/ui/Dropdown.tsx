@@ -47,7 +47,7 @@ export function Dropdown({
     const selected =
         options.find((option) => String(option.value) === String(value)) ?? options[0];
 
-    const triggerClass = `h-14 w-full rounded-2xl border px-5 pr-14 text-left text-[16px] font-semibold outline-none transition ${isDark
+    const triggerClass = `h-14 w-full rounded-2xl border px-5 pr-14 text-left text-[16px] font-semibold outline-none transition-[border-color,background-color,box-shadow] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)] ${isDark
             ? `border-white/10 bg-slate-950 text-slate-100 ${open
                 ? "border-blue-400 bg-slate-900 ring-4 ring-blue-500/10"
                 : "hover:border-white/15"
@@ -69,7 +69,7 @@ export function Dropdown({
                     <svg
                         viewBox="0 0 20 20"
                         fill="none"
-                        className={`h-5 w-5 stroke-[2.2] transition-transform ${isDark ? "stroke-slate-300" : "stroke-slate-500"
+                        className={`h-5 w-5 stroke-[2.2] transition-transform duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] ${isDark ? "stroke-slate-300" : "stroke-slate-500"
                             } ${open ? "rotate-180" : ""}`}
                     >
                         <path d="M5 7.5L10 12.5L15 7.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -78,7 +78,7 @@ export function Dropdown({
             </button>
 
             {open && (
-                <div className={menuClass}>
+                <div className={`${menuClass} apple-pop-in`}>
                     {options.map((option) => {
                         const active = String(option.value) === String(value);
 
@@ -90,7 +90,7 @@ export function Dropdown({
                                     onChange(String(option.value));
                                     setOpen(false);
                                 }}
-                                className={`flex w-full rounded-xl px-4 py-3 text-left text-[16px] font-semibold transition ${active
+                                className={`flex w-full rounded-xl px-4 py-3 text-left text-[16px] font-semibold transition-colors duration-150 ${active
                                         ? "bg-blue-600 text-white"
                                         : isDark
                                             ? "text-slate-200 hover:bg-slate-800"

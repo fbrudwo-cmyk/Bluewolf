@@ -86,14 +86,14 @@ export function LanguageSwitcher({
         >
             {pillStyle && (
                 <span
-                    className="pointer-events-none absolute rounded-2xl bg-blue-600 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                    className="pointer-events-none absolute rounded-2xl bg-blue-600 transition-[left,top,width,height] duration-[380ms] ease-[cubic-bezier(0.22,1,0.36,1)]"
                     style={pillStyle}
                 />
             )}
 
             {items.map((item) => {
                 const isActive = targetKey === item.key;
-                const className = `relative z-10 inline-flex h-11 min-w-[46px] items-center justify-center px-3 text-sm font-bold transition-all duration-300 ${
+                const className = `relative z-10 inline-flex h-11 min-w-[46px] items-center justify-center px-3 text-sm font-bold transition-colors duration-200 ${
                     isActive
                         ? "text-white"
                         : isDark
